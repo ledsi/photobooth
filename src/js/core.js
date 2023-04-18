@@ -5,7 +5,8 @@ const photoBooth = (function () {
             PHOTO: 'photo',
             COLLAGE: 'collage',
             CHROMA: 'chroma',
-            VIDEO: 'video'
+            VIDEO: 'video',
+            CUSTOM: 'custom'
         },
         CameraDisplayMode = {
             INIT: 1,
@@ -143,7 +144,7 @@ const photoBooth = (function () {
         initPhotoSwipeFromDOM('#galimages');
 
         if (config.ui.shutter_animation && config.ui.shutter_cheese_img !== '') {
-            blocker.css('background-image', 'url(' + config.ui.shutter_cheese_img + ')');
+            blocker.css('background-image', 'url(' + config.cheese_img + ')');
         }
     };
 
@@ -277,7 +278,7 @@ const photoBooth = (function () {
                 config.preview.style === PreviewStyle.SCALE_DOWN.valueOf()) &&
             config.preview.showFrame
         ) {
-            if (photoStyle === PhotoStyle.PHOTO && config.picture.take_frame) {
+            if ((photoStyle === PhotoStyle.PHOTO || photoStyle === PhotoStyle.CUSTOM) && config.picture.take_frame) {
                 pictureFrame.show();
             } else if (
                 photoStyle === PhotoStyle.COLLAGE &&
@@ -298,6 +299,9 @@ const photoBooth = (function () {
                 case PhotoStyle.VIDEO:
                     getMode = config.get_request.video;
                     break;
+                case PhotoStyle.CUSTOM:
+                    getMode = config.get_request.custom;
+                    break;
                 case PhotoStyle.PHOTO:
                 default:
                     getMode = config.get_request.picture;
@@ -314,6 +318,9 @@ const photoBooth = (function () {
                 break;
             case PhotoStyle.VIDEO:
                 countdownTime = config.video.cntdwn_time;
+                break;
+            case PhotoStyle.CUSTOM:
+                countdownTime = config.custom.cntdwn_time;
                 break;
             case PhotoStyle.PHOTO:
             default:
@@ -351,13 +358,13 @@ const photoBooth = (function () {
             cheese.text(config.video.cheese);
         } else if (config.ui.shutter_animation && config.ui.shutter_cheese_img !== '') {
             return;
-        } else if (photoStyle === PhotoStyle.PHOTO || photoStyle === PhotoStyle.CHROMA) {
-            cheese.text(photoboothTools.getTranslation('cheese'));
-        } else {
+        } else if (photoStyle === PhotoStyle.COLLAGE) {
             cheese.text(photoboothTools.getTranslation('cheeseCollage'));
             $('<p>')
                 .text(`${api.nextCollageNumber + 1} / ${config.collage.limit}`)
                 .appendTo('.cheese');
+        } else {
+            cheese.text(photoboothTools.getTranslation('cheese'));
         }
         setTimeout(() => {
             cheese.empty();
@@ -657,12 +664,15 @@ const photoBooth = (function () {
         startTime = new Date().getTime();
         spinner.show();
         loading.text(
-            photoStyle === PhotoStyle.PHOTO || photoStyle === PhotoStyle.CHROMA
-                ? photoboothTools.getTranslation('busy')
-                : photoboothTools.getTranslation('busyCollage')
+            photoStyle === PhotoStyle.COLLAGE
+                ? photoboothTools.getTranslation('busyCollage')
+                : photoboothTools.getTranslation('busy')
         );
 
-        if (photoStyle === PhotoStyle.PHOTO && config.picture.preview_before_processing) {
+        if (
+            (photoStyle === PhotoStyle.PHOTO || photoStyle === PhotoStyle.CUSTOM) &&
+            config.picture.preview_before_processing
+        ) {
             const tempImageUrl = config.foldersJS.tmp + '/' + result.file;
             const preloadImage = new Image();
             preloadImage.onload = () => {
@@ -1188,6 +1198,12 @@ const photoBooth = (function () {
         $(this).blur();
     });
 
+    $('.takeCustom, .newcustom').on('click', function (e) {
+        e.preventDefault();
+        api.thrill(PhotoStyle.CUSTOM);
+        $(this).blur();
+    });
+
     $('.takeVideo').on('click', function (e) {
         e.preventDefault();
         api.thrill(PhotoStyle.VIDEO);
@@ -1344,7 +1360,8 @@ const photoBooth = (function () {
         if (typeof onStandaloneGalleryView === 'undefined' && typeof onLiveChromaKeyingView === 'undefined') {
             if (
                 (config.picture.key && parseInt(config.picture.key, 10) === ev.keyCode) ||
-                (config.collage.key && parseInt(config.collage.key, 10) === ev.keyCode)
+                (config.collage.key && parseInt(config.collage.key, 10) === ev.keyCode) ||
+                (config.custom.key && parseInt(config.custom.key, 10) === ev.keyCode)
             ) {
                 if (api.takingPic) {
                     api.handleButtonPressWhileTakingPic();
@@ -1366,13 +1383,12 @@ const photoBooth = (function () {
 
             // picture
             if (config.picture.key && parseInt(config.picture.key, 10) === ev.keyCode) {
-                if (config.collage.enabled && config.collage.only) {
-                    photoboothTools.console.logDev(
-                        'Picture key pressed, but only collage allowed. Triggering collage now.'
-                    );
-                    api.thrill(PhotoStyle.COLLAGE);
-                } else {
+                if (config.picture.enabled) {
                     api.thrill(PhotoStyle.PHOTO);
+                } else {
+                    photoboothTools.console.logDev(
+                        'Picture key pressed, but taking pictures disabled. Please enable picture in your config.'
+                    );
                 }
             }
 
@@ -1382,9 +1398,19 @@ const photoBooth = (function () {
                     api.thrill(PhotoStyle.COLLAGE);
                 } else {
                     photoboothTools.console.logDev(
-                        'Collage key pressed. Please enable collage in your config. Triggering photo now.'
+                        'Collage key pressed, but Collage disabled. Please enable collage in your config.'
                     );
-                    api.thrill(PhotoStyle.PHOTO);
+                }
+            }
+
+            // custom
+            if (config.custom.key && parseInt(config.custom.key, 10) === ev.keyCode) {
+                if (config.custom.enabled) {
+                    api.thrill(PhotoStyle.CUSTOM);
+                } else {
+                    photoboothTools.console.logDev(
+                        'Custom key pressed, but custom action disabled. Please enable custom action in your config.'
+                    );
                 }
             }
         }

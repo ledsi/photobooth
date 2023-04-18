@@ -406,6 +406,12 @@ $configsetup = [
     'pictures' => [
         'view' => 'basic',
         'platform' => 'all',
+        'picture_enabled' => [
+            'view' => 'basic',
+            'type' => 'checkbox',
+            'name' => 'picture[enabled]',
+            'value' => $config['picture']['enabled'],
+        ],
         'picture_cntdwn_time' => [
             'view' => 'basic',
             'type' => 'range',
@@ -694,12 +700,6 @@ $configsetup = [
             'name' => 'collage[enabled]',
             'value' => $config['collage']['enabled'],
         ],
-        'collage_only' => [
-            'view' => 'basic',
-            'type' => 'checkbox',
-            'name' => 'collage[only]',
-            'value' => $config['collage']['only'],
-        ],
         'collage_cntdwn_time' => [
             'view' => 'basic',
             'type' => 'range',
@@ -919,6 +919,54 @@ $configsetup = [
             'type' => 'hidden',
             'name' => 'collage[limit]',
             'value' => $config['collage']['limit'],
+        ],
+    ],
+    'custom' => [
+        'view' => 'expert',
+        'custom_enabled' => [
+            'type' => 'checkbox',
+            'name' => 'custom[enabled]',
+            'value' => $config['custom']['enabled'],
+        ],
+        'take_custom_cmd' => [
+            'type' => 'input',
+            'placeholder' => $defaultConfig['take_custom']['cmd'],
+            'name' => 'take_custom[cmd]',
+            'value' => htmlentities($config['take_custom']['cmd'] ?? ''),
+        ],
+        'custom_cntdwn_time' => [
+            'type' => 'range',
+            'name' => 'custom[cntdwn_time]',
+            'placeholder' => $defaultConfig['custom']['cntdwn_time'],
+            'value' => $config['custom']['cntdwn_time'],
+            'range_min' => 1,
+            'range_max' => 10,
+            'range_step' => 1,
+            'unit' => 'seconds',
+        ],
+        'custom_key' => [
+            'type' => 'input',
+            'name' => 'custom[key]',
+            'placeholder' => '',
+            'value' => $config['collage']['key'],
+        ],
+        'custom_btn_text' => [
+            'type' => 'input',
+            'placeholder' => $defaultConfig['custom']['btn_text'],
+            'name' => 'custom[btn_text]',
+            'value' => htmlentities($config['custom']['btn_text'] ?? ''),
+        ],
+        'get_request_custom' => [
+            'type' => 'input',
+            'placeholder' => $defaultConfig['get_request']['custom'],
+            'name' => 'get_request[custom]',
+            'value' => htmlentities($config['get_request']['custom'] ?? ''),
+        ],
+        'icons_take_custom' => [
+            'type' => 'input',
+            'name' => 'icons[take_custom]',
+            'placeholder' => htmlentities($defaultConfig['icons']['take_custom'] ?? ''),
+            'value' => htmlentities($config['icons']['take_custom'] ?? ''),
         ],
     ],
     'video' => [

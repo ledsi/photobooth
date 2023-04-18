@@ -17,6 +17,9 @@ $cmds = [
         'take_video' => [
             'cmd' => '',
         ],
+        'take_custom' => [
+            'cmd' => '',
+        ],
         'print' => [
             'cmd' => 'mspaint /pt %s',
         ],
@@ -39,6 +42,10 @@ $cmds = [
         ],
         'take_video' => [
             'cmd' => 'python3 cameracontrol.py -v %s --vlen 3 --vframes 4',
+        ],
+        'take_custom' => [
+            'cmd' =>
+                'python3 cameracontrol.py --chromaImage=/var/www/html/resources/img/bg.jpg --chromaColor 00ff00 --chromaSensitivity 0.4 --chromaBlend 0.1 --capture-image-and-download --filename=%s',
         ],
         'print' => [
             'cmd' => 'lp -o landscape -o fit-to-page %s',
@@ -241,6 +248,11 @@ if (empty($config['webserver']['ip'])) {
 
 if (empty($config['qr']['url'])) {
     $config['qr']['url'] = Photobooth::get_url() . '/api/download.php?image=';
+}
+
+$config['cheese_img'] = $config['ui']['shutter_cheese_img'];
+if (!empty($config['cheese_img'])) {
+    $config['cheese_img'] = Helper::set_absolute_path($rootpath . $config['ui']['shutter_cheese_img']);
 }
 
 $config['photobooth']['version'] = Photobooth::get_photobooth_version();

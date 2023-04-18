@@ -552,9 +552,6 @@ check_git_install() {
         info "### Photobooth installed via git."
         GIT_INSTALL=true
         add_git_remote
-
-        info "### Ignoring filemode changes."
-        git config core.fileMode false
     else
         warn "WARN: Not a git Installation."
     fi
@@ -563,6 +560,8 @@ check_git_install() {
 start_git_install() {
     cd $INSTALLFOLDERPATH
     info "### We are installing/updating Photobooth via git."
+    info "### Ignoring filemode changes on git."
+    git config core.fileMode false
     git fetch photoboothproject $BRANCH
     git checkout photoboothproject/$BRANCH
 
@@ -759,8 +758,10 @@ EOF
 general_permissions() {
     info "### Setting permissions."
     chown -R www-data:www-data $INSTALLFOLDERPATH/
+    chmod g+s "$INSTALLFOLDERPATH/private"
     gpasswd -a www-data plugdev
     gpasswd -a www-data video
+    gpasswd -a $USERNAME www-data
 
     touch "/var/www/.yarnrc"
     info "### Fixing permissions on .yarnrc"
@@ -769,6 +770,10 @@ general_permissions() {
     info "### Fixing permissions on cache folder."
     mkdir -p "/var/www/.cache"
     chown -R www-data:www-data "/var/www/.cache"
+
+    info "### Fixing permissions on yarn folder."
+    mkdir -p "/var/www/.yarn"
+    chown -R www-data:www-data "/var/www/.yarn"
 
     info "### Disabling camera automount."
     chmod -x /usr/lib/gvfs/gvfs-gphoto2-volume-monitor || true

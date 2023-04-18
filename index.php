@@ -175,9 +175,14 @@ if (
             <?php endif; ?>
 
             <?php if (!$config['button']['force_buzzer']): ?>
-                <?php if (!($config['collage']['enabled'] && $config['collage']['only'])): ?>
+                <?php if ($config['picture']['enabled']): ?>
                     <a href="#" class="<?php echo $btnClass; ?> newpic rotaryfocus"><i class="<?php echo $config['icons']['take_picture']; ?>"></i> <span
                                 data-i18n="newPhoto"></span></a>
+                <?php endif; ?>
+
+                <?php if ($config['custom']['enabled']): ?>
+                    <a href="#" class="<?php echo $btnClass; ?> newcustom rotaryfocus"><i class="<?php echo $config['icons']['take_custom']; ?>"></i>
+                        <span><?php echo $config['custom']['btn_text']; ?></span></a>
                 <?php endif; ?>
 
                 <?php if ($config['collage']['enabled']): ?>
