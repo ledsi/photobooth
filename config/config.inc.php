@@ -318,6 +318,34 @@ $config['remotebuzzer']['shutdowngpio'] = 16;
 $config['remotebuzzer']['shutdownholdtime'] = '5';
 $config['remotebuzzer']['port'] = 14711;
 $config['remotebuzzer']['debounce'] = 30;
+$config['remotebuzzer']['rebootbutton'] = false;
+$config['remotebuzzer']['rebootgpio'] = 8;
+$config['remotebuzzer']['rebootholdtime'] = '5';
+$config['remotebuzzer']['useleds'] = false;
+$config['remotebuzzer']['photolight'] = false;
+$config['remotebuzzer']['photolightgpio'] = 25;
+$config['remotebuzzer']['pictureled'] = false;
+$config['remotebuzzer']['pictureledgpio'] = 19;
+$config['remotebuzzer']['collageled'] = false;
+$config['remotebuzzer']['collageledgpio'] = 12;
+$config['remotebuzzer']['shutdownled'] = false;
+$config['remotebuzzer']['shutdownledgpio'] = 23;
+$config['remotebuzzer']['rebootled'] = false;
+$config['remotebuzzer']['rebootledgpio'] = 18;
+$config['remotebuzzer']['printled'] = false;
+$config['remotebuzzer']['printledgpio'] = 10;
+$config['remotebuzzer']['videobutton'] = false;
+$config['remotebuzzer']['videogpio'] = 7;
+$config['remotebuzzer']['videoled'] = false;
+$config['remotebuzzer']['videoledgpio'] = 9;
+$config['remotebuzzer']['custombutton'] = false;
+$config['remotebuzzer']['customgpio'] = 5;
+$config['remotebuzzer']['customled'] = false;
+$config['remotebuzzer']['customledgpio'] = 24;
+$config['remotebuzzer']['move2usb'] = 'disabled';
+$config['remotebuzzer']['move2usbgpio'] = 6;
+$config['remotebuzzer']['move2usbled'] = false;
+$config['remotebuzzer']['move2usbledgpio'] = 11;
 
 
 // S Y N C  T O  U S B  S T I C K

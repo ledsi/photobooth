@@ -47,6 +47,14 @@ function initRemoteBuzzerFromDOM() {
                             buttonController.takeCollage();
                             break;
 
+                        case 'start-custom':
+                            buttonController.takeCustom();
+                            break;
+
+                        case 'start-video':
+                            buttonController.takeVideo();
+                            break;
+
                         case 'collage-next':
                             // Need to handle collage process in button handler
                             if (buttonController.waitingToProcessCollage) {
@@ -70,6 +78,10 @@ function initRemoteBuzzerFromDOM() {
 
                         case 'rotary-btn-press':
                             rotaryController.click();
+                            break;
+
+                        case 'start-move2usb':
+                            buttonController.move2usb();
                             break;
 
                         default:
@@ -103,7 +115,7 @@ function initRemoteBuzzerFromDOM() {
         api.inProgress = function (flag) {
             if (this.enabled()) {
                 if (flag) {
-                    this.emitToServer('in-progress');
+                    this.emitToServer('in-progress', flag);
                 } else {
                     this.emitToServer('completed');
                 }
@@ -136,7 +148,25 @@ function initRemoteBuzzerFromDOM() {
             }
         };
 
-        api.emitToServer = function (cmd) {
+        api.startCustom = function () {
+            if (this.enabled()) {
+                this.emitToServer('start-custom');
+            }
+        };
+
+        api.startVideo = function () {
+            if (this.enabled()) {
+                this.emitToServer('start-video');
+            }
+        };
+
+        api.startMove2usb = function () {
+            if (this.enabled()) {
+                this.emitToServer('start-move2usb');
+            }
+        };
+
+        api.emitToServer = function (cmd, photoboothAction) {
             switch (cmd) {
                 case 'start-picture':
                     ioClient.emit('photobooth-socket', 'start-picture');
@@ -144,14 +174,26 @@ function initRemoteBuzzerFromDOM() {
                 case 'start-collage':
                     ioClient.emit('photobooth-socket', 'start-collage');
                     break;
+                case 'start-custom':
+                    ioClient.emit('photobooth-socket', 'start-custom');
+                    break;
+                case 'start-video':
+                    ioClient.emit('photobooth-socket', 'start-video');
+                    break;
                 case 'in-progress':
                     ioClient.emit('photobooth-socket', 'in-progress');
+                    if (photoboothAction != 'in-progress') {
+                        ioClient.emit('photobooth-socket', photoboothAction);
+                    }
                     break;
                 case 'completed':
                     ioClient.emit('photobooth-socket', 'completed');
                     break;
                 case 'collage-wait-for-next':
                     ioClient.emit('photobooth-socket', 'collage-wait-for-next');
+                    break;
+                case 'start-move2usb':
+                    ioClient.emit('photobooth-socket', 'start-move2usb');
                     break;
                 default:
                     break;
@@ -182,9 +224,23 @@ function initRemoteBuzzerFromDOM() {
         };
 
         api.takePicture = function () {
-            if (this.enabled()) {
+            if (this.enabled() && config.picture.enabled) {
                 $('.resultInner').removeClass('show');
                 photoBooth.thrill('photo');
+            }
+        };
+
+        api.takeCustom = function () {
+            if (this.enabled() && config.custom.enabled) {
+                $('.resultInner').removeClass('show');
+                photoBooth.thrill('custom');
+            }
+        };
+
+        api.takeVideo = function () {
+            if (this.enabled() && config.video.enabled) {
+                $('.resultInner').removeClass('show');
+                photoBooth.thrill('video');
             }
         };
 
@@ -216,6 +272,13 @@ function initRemoteBuzzerFromDOM() {
             }
         };
 
+        api.move2usb = function () {
+            if (this.enabled()) {
+                $('.resultInner').removeClass('show');
+                photoBooth.thrill('move2usb');
+            }
+        };
+
         return api;
     })();
 
@@ -231,7 +294,6 @@ function initRemoteBuzzerFromDOM() {
         api.enabled = function () {
             return (
                 config.remotebuzzer.userotary &&
-                !config.remotebuzzer.usenogpio &&
                 (typeof onStandaloneGalleryView === 'undefined' ? true : config.remotebuzzer.enable_standalonegallery)
             );
         };

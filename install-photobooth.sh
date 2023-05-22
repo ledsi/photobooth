@@ -713,7 +713,10 @@ raspberry_permission() {
     sed -i '/Photobooth/,/Photobooth End/d' /boot/config.txt
 cat >> /boot/config.txt  << EOF
 # Photobooth
-gpio=16,17,20,21,22,26,27=pu
+#IN
+gpio=5,6,7,8,16,17,20,21,22,26,27=pu
+#OUT
+gpio=9,10,11,12,18,19,23,24,25=op
 # Photobooth End
 EOF
 

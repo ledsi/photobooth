@@ -225,7 +225,7 @@ For example use <a href="https://keycode.info" target="_blank">https://keycode.i
 
   - Key code which triggers printing: **define**
 
-#### Remotebuzzer Hardware Button feature using GPIO connected hardware (Raspberry Pi only)
+#### Remotebuzzer Hardware Button & LED feature using GPIO connected hardware (Raspberry Pi only)
 
 **Important:** Works if you access Photobooth via [http://localhost](http://localhost) or [http://your-ip-adress](#), but accessing via the loopback IP (127.0.0.1) does not work!
 
@@ -241,7 +241,9 @@ The Hardware Button functionality supports two separate modes of operation (sele
 
 Both buttons and rotary encoder controls can be combined.
 
-Photobooth will watch GPIOs for a PIN_DOWN event - so the hardware button needs to pull the GPIO to ground, for to trigger. This requires the GPIOs to be configured in PULLUP mode - always. 
+Photobooth will watch Button GPIOs for a PIN_DOWN event - so the hardware button needs to pull the GPIO to ground, for to trigger. This requires the GPIOs to be configured in PULLUP mode - always. 
+
+For the **LED Support** GPIOs need to be set as OUTPUT.
 
 ##### Troubleshooting / Debugging
 
@@ -254,11 +256,15 @@ Having trouble?
 - Check the server logs for errors at the Debug panel: [http://localhost/admin/debugpanel](http://localhost/admin/debugpanel)
 - If there is no errors logged but hardware buttons still do not trigger:
   - GPIO interrupts might be disabled. Check file `/boot/config.txt` and remove / disable the following overlay `dtoverlay=gpio-no-irq` to enable interrupts for GPIOs.
-  - GPIOs may not be configured as PULLUP. The configuration for this is done in fie `/boot/config.txt` by adding the GPIO numbers in use as follows - you **must reboot** the Raspberry Pi in order to activate changes in this setting.
+  - Button GPIOs may not be configured as PULLUP. The configuration for this is done in fie `/boot/config.txt` by adding the GPIO numbers in use as follows - you **must reboot** the Raspberry Pi in order to activate changes in this setting.
     ```
-    gpio=16,17,20,21,22,26,27=pu
+    gpio=9,16,17,20,21,22,23,24,26,27=pu
     ```
-- For the Shutdown button to work, `www-data` needs to have the necessary sudo permissions. This is done by the `install-photobooth.sh` script or can be manually added as
+  - LED GPIOs may not be configured as OUTPUT. The configuration for this is done in fie `/boot/config.txt` by adding the GPIO numbers in use as follows - you **must reboot** the Raspberry Pi in order to activate changes in this setting.
+    ```
+    gpio=5,6,7,8,12,18,19,25=op
+    ```
+- For the shutdown and reboot buttons to work, `www-data` needs to have the necessary sudo permissions. This is done by the `install-photobooth.sh` script or can be manually added as
     ```sh
     cat >> /etc/sudoers.d/020_www-data-shutdown << EOF
     www-data ALL=(ALL) NOPASSWD: /sbin/shutdown
@@ -308,6 +314,27 @@ The server supports up to four connected hardware buttons for the following func
 - Defaults to GPIO26
 - This button will initiate a print of the current picture either from the results screen or the gallery.
 
+5) **Reboot Button**
+
+- Defaults to GPIO23
+- This button will initate a safe system shutdown and halt (`shutdown -r now`).
+
+6) **Video Button**
+
+- Defaults to GPIO9
+- This button will initiate the recording of a short video.
+
+7) **Custom Button**
+
+- Defaults to GPIO24
+- Button press will trigger a single picture in Photobooth
+
+8) **Move2USB Button**
+
+- Defaults to GPIO10
+- This button will initiate the copy/move of all pictures an videos (jpg, gif und mp4) to a USB-thumb.
+- In the admin panel you can choose between disabled, copy and move.
+
 
 After any button is triggered, all hardware button remain disabled until the action (picture / collage) completed. Once completed, the hardware buttons re-arms / are active again.
 
@@ -318,8 +345,12 @@ Button            Raspberry
 
 Picture     ---   GPIO 21
 Collage     ---   GPIO 20
+Custom      ---   GPIO  5
+Video       ---   GPIO  7
 Shutdown    ---   GPIO 16
 Print       ---   GPIO 26
+Reboot      ---   GPIO  8
+Move2USB    ---   GPIO  6
 All         ---   GND
 ```
 
@@ -340,6 +371,26 @@ BTN  ---   GPIO 22
 GND  ---   GND
 ```
 
+##### LED Support
+
+LED's can be used to show the current status of remotebuzzer server actions.
+
+The wiring layout is
+
+```
+LED                   Raspberry
+
+Photolight      ---   GPIO 25
+Picture LED     ---   GPIO 19
+Collage LED     ---   GPIO 12
+Custom LED      ---   GPIO 24
+Video LED       ---   GPIO  9
+Shutdown LED    ---   GPIO 23
+Reboot LED      ---   GPIO 18
+Print LED       ---   GPIO 10
+Move2USB LED    ---   GPIO 11
+```
+
 ##### Known limitations:
 
 - Delete Picture: in order to be able to access the Delete button through rotary control, please activate admin setting General -> "Delete images without confirm request"
@@ -354,10 +405,9 @@ The following elements are currently not supported and not accessible through ro
 The trigger server controls and coordinates sending commands via socket.io to the photobooth client. Next to a hardware button, any socket.io client can connect to the trigger server over the network, and send a trigger command. This gives full flexibility to integrate other backend systems for trigger signals.
 
 - Channel:  `photobooth-socket`
-- Commands: `start-picture`, `start-collage`
+- Commands: `start-picture`, `start-collage`, `collage-next`, `start-custom`, `start-video`, `print`, `rotary-cw`, `rotary-ccw`, `rotary-btn-press`, `move2usb`
 - Response: `completed` will be emitted to the client, once photobooth finished the task
 
-This functionality is experimental and largely untested. Not sure if there is a use-case but if you have one, happy to learn about it. Currently this does not support rotary encoder use but could be if needed.
 
 #### Remote trigger using simple web requests
 
@@ -367,12 +417,22 @@ Simple `GET` requests can be used to trigger single pictures or collages. Those 
 - `[Photobooth IP]` needs to match the configured value under `General` - `IP address of the Photobooth web server` and
 - `[Hardware Button Server Port]` the value from `Hardware Button` - `Enable Hardware Buttons`
 
-The available endpoints are:
+The available endpoints, depending on enabled features and hardware button options, are:
 - `[Base Url]/` - Simple help page with all available endpoints
 - `[Base Url]/commands/start-picture` - Triggers a single picture
 - `[Base Url]/commands/start-collage` - Triggers a collage
+- `[Base Url]/commands/start-custom` - Triggers custom button action
+- `[Base Url]/commands/start-print` - Triggers print
+- `[Base Url]/commands/start-video` - Triggers a video capture
+- `[Base Url]/commands/reboot-now` - Triggers reboot command
+- `[Base Url]/commands/shutdown-now` - Triggers shutdown command
+- `[Base Url]/commands/rotary-cw` - Focus next element
+- `[Base Url]/commands/rotary-ccw` - Focus previous element
+- `[Base Url]/commands/rotary-btn-press` - Triggers a click action
+- `[Base Url]/commands/'start-move2usb` - Trigger picture move to USB
 
 These trigger URLs can be used for example with [myStrom WiFi Buttons](https://mystrom.com/wifi-button/) or [Shelly Buttons](https://shelly.cloud/products/shelly-button-1-smart-home-automation-device/) (untested).
+
 
 ##### Installation steps for myStrom WiFi Button
 - Be sure to connect the button to the same network as the photobooth
