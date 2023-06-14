@@ -1,7 +1,7 @@
 function keypadAdd(value) {
-    var keypadPin = $('#keypad_pin').html();
-    var newPin = keypadPin + value;
-    var pinLength = newPin.length;
+    const keypadPin = $('#keypad_pin').html();
+    const newPin = keypadPin + value;
+    const pinLength = newPin.length;
     $('#keypad_pin').html(newPin);
 
     $('.keypad_keybox.active').addClass('checked');
@@ -22,8 +22,8 @@ function keypadAdd(value) {
 }
 
 function keypadRemoveLastValue() {
-    var newPin = $('#keypad_pin').html().slice(0, -1);
-    var pinLength = newPin.length;
+    const newPin = $('#keypad_pin').html().slice(0, -1);
+    const pinLength = newPin.length;
     $('#keypad_pin').html(newPin);
 
     $('.keypad_keybox')
@@ -55,11 +55,9 @@ function keypadClear() {
 document.addEventListener('keydown', function (event) {
     if (event.which >= 48 && event.which <= 57) {
         keypadAdd(event.which - 48);
-    }
-    else if (event.which == 27) {
+    } else if (event.which == 27) {
         keypadClear();
-    }
-    else if (event.which == 8) {
+    } else if (event.which == 8) {
         keypadRemoveLastValue();
     }
 });
@@ -76,8 +74,8 @@ function checkKeypadPin(pin) {
         },
 
         success: function (e) {
-            var jsonData = $.parseJSON(e);
-            
+            const jsonData = $.parseJSON(e);
+
             if (jsonData.state == true) {
                 window.location.href = '/admin';
             } else {
@@ -94,8 +92,7 @@ function checkKeypadPin(pin) {
             }
         },
 
-        error: function (e, t) {
-            console.error('Server nicht erreichbar!');
+        error: function () {
             keypadClear();
             $('.keypadLoader').addClass('hidden');
         }
