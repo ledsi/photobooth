@@ -6,7 +6,7 @@
         </div>
 
         <div class="w-full text-center text-gray-500 mb-8">
-            Bitte logge dich ein um fortzufahren.
+            <span data-i18n="login_please"></span>
         </div>
 
         <!-- user -->

@@ -58,6 +58,11 @@ class Image {
     public $resizeMaxHeight = 0;
 
     /**
+     * @var bool Determine to keep aspect ratio on resize.
+     */
+    public $keepAspectRatio = false;
+
+    /**
      *
      * Text to Image Difinitions
      *
@@ -585,17 +590,18 @@ class Image {
 
             $old_width = imagesx($image);
             $old_height = imagesy($image);
-            $max_width = $this->resizeMaxWidth;
-            $max_height = $this->resizeMaxHeight;
+            $new_width = $this->resizeMaxWidth;
+            $new_height = $this->resizeMaxHeight;
 
-            if ($old_width <= 0 || $old_height <= 0 || $max_width <= 0 || $max_height <= 0) {
+            if ($old_width <= 0 || $old_height <= 0 || $new_width <= 0 || $new_height <= 0) {
                 throw new Exception('Invalid image dimensions or maximum dimensions.');
             }
 
-            $scale = min($max_width / $old_width, $max_height / $old_height);
-            $new_width = ceil($scale * $old_width);
-            $new_height = ceil($scale * $old_height);
-
+            if ($this->keepAspectRatio) {
+                $scale = min($new_width / $old_width, $new_height / $old_height);
+                $new_width = ceil($scale * $old_width);
+                $new_height = ceil($scale * $old_height);
+            }
             $new = imagecreatetruecolor($new_width, $new_height);
             if (!$new) {
                 throw new Exception('Cannot create new image.');
@@ -604,8 +610,14 @@ class Image {
             imagealphablending($new, false);
             imagesavealpha($new, true);
 
-            if (!imagecopyresized($new, $image, 0, 0, 0, 0, $new_width, $new_height, $old_width, $old_height)) {
-                throw new Exception('Cannot resize image.');
+            if ($this->keepAspectRatio) {
+                if (!imagecopyresized($new, $image, 0, 0, 0, 0, $new_width, $new_height, $old_width, $old_height)) {
+                    throw new Exception('Cannot resize image.');
+                }
+            } else {
+                if (!imagecopyresampled($new, $image, 0, 0, 0, 0, $new_width, $new_height, $old_width, $old_height)) {
+                    throw new Exception('Cannot resize image.');
+                }
             }
         } catch (Exception $e) {
             $this->addErrorData($e->getMessage());
@@ -795,7 +807,7 @@ class Image {
 
             // Add first line of text
             if (!empty($this->textLine1)) {
-                if (imagettftext($sourceResource, $fontSize, $fontRotation, $fontLocationX, $fontLocationY, $color, $fontPath, $this->textLine1)) {
+                if (!imagettftext($sourceResource, $fontSize, $fontRotation, $fontLocationX, $fontLocationY, $color, $fontPath, $this->textLine1)) {
                     throw new Exception('Could not add first line of text to resource.');
                 }
             }
@@ -804,7 +816,7 @@ class Image {
             if (!empty($this->textLine2)) {
                 $line2Y = $fontRotation < 45 && $fontRotation > -45 ? $fontLocationY + $textLineSpacing : $fontLocationY;
                 $line2X = $fontRotation < 45 && $fontRotation > -45 ? $fontLocationX : $fontLocationX + $textLineSpacing;
-                if (imagettftext($sourceResource, $fontSize, $fontRotation, $line2X, $line2Y, $color, $fontPath, $this->textLine2)) {
+                if (!imagettftext($sourceResource, $fontSize, $fontRotation, $line2X, $line2Y, $color, $fontPath, $this->textLine2)) {
                     throw new Exception('Could not add second line of text to resource.');
                 }
             }
@@ -813,7 +825,7 @@ class Image {
             if (!empty($this->textLine3)) {
                 $line3Y = $fontRotation < 45 && $fontRotation > -45 ? $fontLocationY + $textLineSpacing * 2 : $fontLocationY;
                 $line3X = $fontRotation < 45 && $fontRotation > -45 ? $fontLocationX : $fontLocationX + $textLineSpacing * 2;
-                if (imagettftext($sourceResource, $fontSize, $fontRotation, $line3X, $line3Y, $color, $fontPath, $this->textLine3)) {
+                if (!imagettftext($sourceResource, $fontSize, $fontRotation, $line3X, $line3Y, $color, $fontPath, $this->textLine3)) {
                     throw new Exception('Could not add third line of text to resource.');
                 }
             }

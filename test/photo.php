@@ -1,8 +1,10 @@
 <?php
-require_once '../lib/config.php';
-require_once '../lib/filter.php';
-require_once '../lib/applyEffects.php';
-require_once '../lib/image.php';
+$fileRoot = '../';
+
+require_once $fileRoot . 'lib/config.php';
+require_once $fileRoot . 'lib/filter.php';
+require_once $fileRoot . 'lib/applyEffects.php';
+require_once $fileRoot . 'lib/image.php';
 
 $demoPath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'resources/img/demo';
 $demoFolder = realpath($demoPath);
@@ -82,7 +84,7 @@ if ($config['textonpicture']['enabled']) {
     $imageHandler->fontColor = $config['textonpicture']['font_color'];
     $imageHandler->fontPath = $config['textonpicture']['font'];
     $imageHandler->textLine1 = $config['textonpicture']['line1'];
-    $imageHandler->textLine1 = $config['textonpicture']['line2'];
+    $imageHandler->textLine2 = $config['textonpicture']['line2'];
     $imageHandler->textLine3 = $config['textonpicture']['line3'];
     $imageHandler->textLineSpacing = $config['textonpicture']['linespace'];
     $imageResource = $imageHandler->applyText($imageResource);

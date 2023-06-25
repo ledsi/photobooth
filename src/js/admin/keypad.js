@@ -66,7 +66,7 @@ function checkKeypadPin(pin) {
     $('.keypadLoader').removeClass('hidden');
 
     $.ajax({
-        url: '../../api/controller.php',
+        url: config.foldersJS.api + '/controller.php',
         type: 'POST',
         data: {
             controller: 'keypadLogin',
@@ -77,7 +77,7 @@ function checkKeypadPin(pin) {
             const jsonData = $.parseJSON(e);
 
             if (jsonData.state == true) {
-                window.location.href = '/admin';
+                window.location.href = '../admin';
             } else {
                 $('.keypad_keybox').addClass('error');
                 $('.keypad_key').addClass('error');

@@ -63,7 +63,7 @@
         </div>
 
         <div class="w-full text-center text-gray-500 mb-8">
-            Bitte gib deinen <?=$pinLength?>-stelligen PIN ein.
+            <span data-i18n="login_pin_request"></span>
         </div>
 
         <div class="w-full text-center text-gray-500 mb-8">
