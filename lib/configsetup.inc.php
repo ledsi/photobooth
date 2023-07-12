@@ -307,6 +307,13 @@ $configsetup = [
             'name' => 'DISKUSAGEBUTTON',
             'value' => 'diskusage-btn',
         ],
+        'images_upload' => [
+            'view' => 'basic',
+            'type' => 'button',
+            'placeholder' => 'images_upload',
+            'name' => 'IMAGESUPLOAD',
+            'value' => 'imagesupload-btn',
+        ],
     ],
     'frontpage' => [
         'view' => 'basic',
@@ -321,6 +328,24 @@ $configsetup = [
             'type' => 'checkbox',
             'name' => 'ui[skip_welcome]',
             'value' => $config['ui']['skip_welcome'],
+        ],
+        'ui_admin_shortcut' => [
+            'view' => 'expert',
+            'type' => 'checkbox',
+            'name' => 'ui[admin_shortcut]',
+            'value' => $config['ui']['admin_shortcut'],
+        ],
+        'ui_admin_shortcut_position' => [
+            'view' => 'expert',
+            'type' => 'select',
+            'name' => 'ui[admin_shortcut_position]',
+            'value' => $config['ui']['admin_shortcut_position'],
+            'options' => [
+                'top-left' => 'Top-Left',
+                'top-right' => 'Top-Right',
+                'bottom-left' => 'Bottom-Left',
+                'bottom-right' => 'Bottom-Right',
+            ],
         ],
         'ui_github' => [
             'view' => 'expert',
@@ -385,7 +410,7 @@ $configsetup = [
         ],
         'logo_path' => [
             'view' => 'expert',
-            'type' => 'input',
+            'type' => 'image',
             'placeholder' => $defaultConfig['logo']['enabled'],
             'name' => 'logo[path]',
             'value' => htmlentities($config['logo']['path'] ?? ''),
@@ -804,14 +829,14 @@ $configsetup = [
         ],
         'collage_frame' => [
             'view' => 'expert',
-            'type' => 'input',
+            'type' => 'image',
             'placeholder' => $defaultConfig['collage']['frame'],
             'name' => 'collage[frame]',
             'value' => htmlentities($config['collage']['frame'] ?? ''),
         ],
         'collage_background' => [
             'view' => 'expert',
-            'type' => 'input',
+            'type' => 'image',
             'placeholder' => $defaultConfig['collage']['background'],
             'name' => 'collage[background]',
             'value' => htmlentities($config['collage']['background'] ?? ''),
@@ -831,7 +856,7 @@ $configsetup = [
         ],
         'collage_placeholderpath' => [
             'view' => 'expert',
-            'type' => 'input',
+            'type' => 'image',
             'placeholder' => $defaultConfig['collage']['placeholderpath'],
             'name' => 'collage[placeholderpath]',
             'value' => htmlentities($config['collage']['placeholderpath'] ?? ''),
@@ -1581,7 +1606,7 @@ $configsetup = [
         ],
         'print_frame' => [
             'view' => 'expert',
-            'type' => 'input',
+            'type' => 'image',
             'placeholder' => $defaultConfig['print']['frame'],
             'name' => 'print[frame]',
             'value' => htmlentities($config['print']['frame'] ?? ''),
@@ -2478,14 +2503,14 @@ $configsetup = [
         ],
         'background_defaults' => [
             'view' => 'expert',
-            'type' => 'input',
+            'type' => 'image',
             'name' => 'background[defaults]',
             'placeholder' => $defaultConfig['background']['defaults'],
             'value' => htmlentities($config['background']['defaults'] ?? ''),
         ],
         'background_chroma' => [
             'view' => 'expert',
-            'type' => 'input',
+            'type' => 'image',
             'name' => 'background[chroma]',
             'placeholder' => $defaultConfig['background']['chroma'],
             'value' => htmlentities($config['background']['chroma'] ?? ''),
