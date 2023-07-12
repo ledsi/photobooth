@@ -1,6 +1,8 @@
 
 # Photobooth v4
 
+![](resources/img/logo/banner.png)
+
 A Photobooth web interface for Linux and Windows.
 
 Photobooth was initially developped by Andre Rinas to use on a Raspberry Pi, you can find his source [here](https://github.com/andreknieriem/photobooth).  
@@ -193,3 +195,7 @@ Thanks for reading!
 - [ledsi](https://github.com/ledsi)
 - [vucubcaquix](https://github.com/vucubcaquix)
 - [Spike-78](https://github.com/Spike-78)
+- [Mathias Fiege](https://www.webpension.de/)
+- [Guillaume Roure](https://github.com/Ippephyx)
+
+

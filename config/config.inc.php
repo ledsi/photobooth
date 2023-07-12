@@ -14,10 +14,10 @@ $config['adminpanel']['view'] = 'basic';
 $config['adminpanel']['experimental_settings'] = false;
 $config['dev']['loglevel'] = '1';
 $config['dev']['demo_images'] = false;
-$config['start_screen']['title'] = 'Photobooth';
-$config['start_screen']['title_visible'] = true;
+$config['start_screen']['title'] = '';
+$config['start_screen']['title_visible'] = false;
 $config['start_screen']['subtitle'] = '';
-$config['start_screen']['subtitle_visible'] = true;
+$config['start_screen']['subtitle_visible'] = false;
 // possible thumb_size values: '360px', '540px', '900px', '1080px', '1260px'
 $config['picture']['thumb_size'] = '540px';
 $config['dev']['reload_on_error'] = true;
@@ -39,16 +39,16 @@ $config['database']['file'] = 'db';
 // F R O N T P A G E
 $config['ui']['show_fork'] = true;
 $config['ui']['skip_welcome'] = false;
-$config['logo']['enabled'] = false;
-$config['logo']['path'] = 'private/logo.png';
-// possible logo position values: 'top_right', 'top_left', 'bottom_right', 'bottom_left'
-$config['logo']['position'] = 'bottom_right';
-$config['event']['enabled'] = true;
-$config['event']['textLeft'] = 'We';
+$config['logo']['enabled'] = true;
+$config['logo']['path'] = '';
+// possible logo position values: 'center', 'top_right', 'top_left', 'bottom_right', 'bottom_left'
+$config['logo']['position'] = 'center';
+$config['event']['enabled'] = false;
+$config['event']['textLeft'] = '';
 // possible event symbol values: 'fa-camera-retro', 'fa-birthday-cake', 'fa-gift', 'fa-tree', 'fa-snowflake-o', 'fa-heart-o',
 //                               'fa-heart', 'fa-heartbeat', 'fa-apple', 'fa-anchor', 'fa-glass', 'fa-gears', 'fa-users'
 $config['event']['symbol'] = 'fa-heart-o';
-$config['event']['textRight'] = 'OpenSource';
+$config['event']['textRight'] = '';
 $config['button']['force_buzzer'] = false;
 
 
@@ -68,7 +68,7 @@ $config['picture']['polaroid_rotation'] = '0';
 $config['filters']['enabled'] = true;
 $config['filters']['defaults'] = 'plain';
 $config['filters']['disabled'] = array();
-$config['picture']['take_frame'] = false;
+$config['picture']['take_frame'] = true;
 $config['picture']['frame'] = '';
 $config['picture']['extend_by_frame'] = true;
 $config['picture']['frame_left_percentage'] = 10;
@@ -391,23 +391,24 @@ $config['button']['show_fs'] = false;
 $config['button']['homescreen'] = true;
 $config['ui']['result_buttons'] = true;
 $config['ui']['font_size'] = '16px';
-$config['colors']['countdown'] = '#ffffff';
-$config['colors']['background_countdown'] = '#2e2e2e';
-$config['colors']['cheese'] = '#ffffff';
+$config['colors']['countdown'] = '#1b3faa';
+$config['colors']['background_countdown'] = '#8d9fd4';
+$config['colors']['cheese'] = '#aa1b3f';
 $config['background']['defaults'] = '';
 $config['background']['chroma'] = '';
 $config['ui']['decore_lines'] = true;
 $config['ui']['rounded_corners'] = false;
-$config['colors']['primary'] = '#2e2e2e';
-$config['colors']['secondary'] = '#212121';
-$config['colors']['highlight'] = '#C0C0C0';
+$config['colors']['primary'] = '#1b3faa';
+$config['colors']['primary_light'] = '#e8ebf6';
+$config['colors']['secondary'] = '#5f78c3';
+$config['colors']['highlight'] = '#8d9fd4';
 $config['colors']['font'] = '#c9c9c9';
+$config['colors']['font_secondary'] = '#333333';
 $config['colors']['button_font'] = '#ffffff';
-$config['colors']['start_font'] = '#ffffff';
-$config['colors']['panel'] = '#1B3FAA';
-$config['colors']['hover_panel'] = '#2e2e2e';
+$config['colors']['start_font'] = '#333333';
+$config['colors']['panel'] = '#1b3faa';
 $config['colors']['border'] = '#eeeeee';
-$config['colors']['box'] = '#f8f9fc';
+$config['colors']['box'] = '#e8ebf6';
 $config['colors']['gallery_button'] = '#ffffff';
 
 

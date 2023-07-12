@@ -30,7 +30,7 @@ $btnClass = 'w-full h-12 rounded-full bg-brand-1 text-white flex items-center ju
 ?>
 
 <body>
-	<div class="w-full h-screen grid place-items-center absolute bg-brand-1 px-6 py-12 overflow-x-hidden overflow-y-auto">
+	<div class="w-full h-screen grid place-items-center absolute bg-brand-2 px-6 py-12 overflow-x-hidden overflow-y-auto">
 		<div class="w-full flex items-center justify-center flex-col">
 
 		<?php 
@@ -63,7 +63,7 @@ $btnClass = 'w-full h-12 rounded-full bg-brand-1 text-white flex items-center ju
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 ">
 				<?php 
 					if(!$config['protect']['admin'] || (!$config['protect']['localhost_admin'] && (isset($_SERVER['SERVER_ADDR']) && $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR'])) || !$config['login']['enabled'] || (isset($_SESSION['auth']) && $_SESSION['auth'] === true)) {
-						echo getMenuBtn('/admin', 'admin_panel', $config['icons']['admin']);
+						echo getMenuBtn($fileRoot . 'admin', 'admin_panel', $config['icons']['admin']);
 					}
 
 					echo getMenuBtn($fileRoot . 'gallery', 'gallery', $config['icons']['gallery']);

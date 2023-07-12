@@ -4,9 +4,9 @@
   height: 0px;
   left: 0;
   top: 0;
-  background: $mainColor;
+  background: $primaryLightColor;
   overflow: hidden;
-  color: $fontColor;
+  color: $secondaryFontColor;
   transition: width 0.3s, height 0.3s;
   z-index: 1000;
 
@@ -32,7 +32,7 @@
     height: auto;
     max-height: 100px;
     width: 100%;
-    background: $mainColor;
+    background: $secondaryColor;
 
     > a {
       position: absolute;
@@ -42,7 +42,7 @@
       font-size: 1.875em;
       width: 50px;
       height: 50px;
-      background: $secondaryColor;
+      background: $primaryColor;
       text-align: center;
       line-height: 50px;
     }
@@ -57,7 +57,7 @@
     margin-top: auto;
     display: flex;
     justify-content: center;
-    background: $mainColor;
+    background: $secondaryColor;
     box-shadow: 0 0 1em $highlightColor;
   }
 
@@ -84,7 +84,7 @@
     figure {
       margin: 0;
       border: 1px solid $borderColor;
-      background-color: $secondaryColor;
+      background-color: $primaryLightColor;
     }
   }
 
@@ -95,7 +95,7 @@
   figcaption {
     border: none;
     text-align: center;
-    color: $fontColor;
+    color: $secondaryFontColor;
   }
 }
 

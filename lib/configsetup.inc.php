@@ -395,6 +395,7 @@ $configsetup = [
             'type' => 'select',
             'name' => 'logo[position]',
             'options' => [
+                'center' => 'center',
                 'top_right' => 'Top Right',
                 'top_left' => 'Top Left',
                 'bottom_right' => 'Bottom Right',
@@ -506,13 +507,13 @@ $configsetup = [
             'value' => $config['filters']['disabled'],
         ],
         'picture_take_frame' => [
-            'view' => 'expert',
+            'view' => 'basic',
             'type' => 'checkbox',
             'name' => 'picture[take_frame]',
             'value' => $config['picture']['take_frame'],
         ],
         'picture_frame' => [
-            'view' => 'expert',
+            'view' => 'basic',
             'type' => 'input',
             'placeholder' => $defaultConfig['picture']['frame'],
             'name' => 'picture[frame]',
@@ -948,7 +949,7 @@ $configsetup = [
             'type' => 'input',
             'name' => 'custom[key]',
             'placeholder' => '',
-            'value' => $config['collage']['key'],
+            'value' => $config['custom']['key'],
         ],
         'custom_btn_text' => [
             'type' => 'input',
@@ -2502,6 +2503,13 @@ $configsetup = [
             'placeholder' => $defaultConfig['colors']['primary'],
             'value' => $config['colors']['primary'],
         ],
+        'colors_primary_light' => [
+            'view' => 'expert',
+            'type' => 'color',
+            'name' => 'colors[primary_light]',
+            'placeholder' => $defaultConfig['colors']['primary_light'],
+            'value' => $config['colors']['primary_light'],
+        ],
         'colors_secondary' => [
             'view' => 'expert',
             'type' => 'color',
@@ -2523,6 +2531,13 @@ $configsetup = [
             'placeholder' => $defaultConfig['colors']['font'],
             'value' => $config['colors']['font'],
         ],
+        'colors_font_secondary' => [
+            'view' => 'expert',
+            'type' => 'color',
+            'name' => 'colors[font_secondary]',
+            'placeholder' => $defaultConfig['colors']['font_secondary'],
+            'value' => $config['colors']['font_secondary'],
+        ],
         'colors_button_font' => [
             'view' => 'expert',
             'type' => 'color',
@@ -2543,13 +2558,6 @@ $configsetup = [
             'name' => 'colors[panel]',
             'placeholder' => $defaultConfig['colors']['panel'],
             'value' => $config['colors']['panel'],
-        ],
-        'colors_hover_panel' => [
-            'view' => 'expert',
-            'type' => 'color',
-            'name' => 'colors[hover_panel]',
-            'placeholder' => $defaultConfig['colors']['hover_panel'],
-            'value' => $config['colors']['hover_panel'],
         ],
         'colors_border' => [
             'view' => 'expert',
